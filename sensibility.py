@@ -41,13 +41,18 @@ def analise_sensibilidade(c, A, b, base, nao_base, B_inv, pi):
     for i in range(m):
         row = i + 1
         rhs_i = b[i]
-        limites = []
-        for j in range(m):
-            if B_inv[i, j] > 0:
-                limites.append((x_B[j] / B_inv[i, j], 'decrease'))  # corrigido: ERA 'up'
-            elif B_inv[i, j] < 0:
-                limites.append((-x_B[j] / B_inv[i, j], 'increase'))  # corrigido: ERA 'down'
+        direction = B_inv[:, i]
 
-        inc = min([lim[0] for lim in limites if lim[1] == 'increase'], default=float('inf'))
-        dec = min([lim[0] for lim in limites if lim[1] == 'decrease'], default=float('inf'))
+        inc_candidates = []
+        dec_candidates = []
+
+        for j in range(m):
+            if direction[j] < 0:
+                inc_candidates.append(-x_B[j] / direction[j])
+            elif direction[j] > 0:
+                dec_candidates.append(x_B[j] / direction[j])
+
+        inc = min(inc_candidates) if inc_candidates else float('inf')
+        dec = min(dec_candidates) if dec_candidates else float('inf')
+
         print(f"{row:<5} {rhs_i:>10.6f} {inc:>15.6f} {dec:>15.6f}")
