@@ -43,7 +43,16 @@ while True:
     print("\n-----------------------------")
     print("Base atual:", [f"x{i+1}" for i in base])
     print("x_B:", x_B)
-    print("Custos reduzidos:", custos_reduzidos)
+
+    n_dec = n_var - m
+    # Vetor completo de custos reduzidos (0 para variáveis básicas)
+    custos_reduzidos_completos = np.zeros(n_var)
+    for i, j in enumerate(nao_base):
+        custos_reduzidos_completos[j] = custos_reduzidos[i]
+
+    # Mostrar apenas os custos reduzidos das variáveis de decisão (x1 até xn_dec)
+    custos_decisao = np.round(custos_reduzidos_completos[:n_dec], 1)
+    print("Custos reduzidos (variáveis de decisão):", custos_decisao)
 
     # Teste de otimalidade
     if all(custos_reduzidos >= 0):
@@ -56,7 +65,15 @@ while True:
         # Solução dual (pi ou y)
         print("\nSolução Dual (y):", abs(pi))
         print("Valor ótimo de W (Dual):", abs(b @ pi))  # Garantir que seja positivo (valor absoluto)
-        
+
+        # variáveis de folga
+        x_folga = x[n_var - m:]
+        nomes_folga = [f"x{i+1}" for i in range(n_var - m, n_var)]
+
+        print("Variáveis de folga:")
+        for nome, valor in zip(nomes_folga, x_folga):
+            print(f"  {nome} = {round(valor, 2)}")
+
         break
 
     # Escolhe variável que entra (menor custo reduzido)
