@@ -10,7 +10,7 @@ c = -1 * data.c_ext  # Maximização vira minimização
 A = data.A
 b = data.b
 
-# Número de variáveis
+# Número de variáveis e restrições
 n_var = len(c)
 m = len(b)
 
@@ -93,7 +93,7 @@ while True:
         print("Problema ilimitado!")
         break
 
-    # Razões θ
+    # Razões θ (mínima de Bland)
     theta = np.divide(x_B, direcao, out=np.full_like(x_B, np.inf), where=direcao > 0)
     indice_saida_local = np.argmin(theta)
     indice_saida = base[indice_saida_local]
