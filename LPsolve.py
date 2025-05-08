@@ -1,6 +1,7 @@
 import numpy as np
 import scipy.linalg as la
 import LPdata as data
+import sensibility as sens
 
 np.seterr(divide='ignore', invalid='ignore')
 
@@ -73,6 +74,9 @@ while True:
         print("Variáveis de folga:")
         for nome, valor in zip(nomes_folga, x_folga):
             print(f"  {nome} = {round(valor, 2)}")
+
+        # Chamar a análise de sensibilidade
+        sens.analise_sensibilidade(c, A, b, base, nao_base, B_inv, pi)
 
         break
 
