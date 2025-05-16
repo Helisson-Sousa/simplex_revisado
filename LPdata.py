@@ -21,7 +21,8 @@ def parse_modelo_txt(file_path):
     with open(file_path, 'r') as f:
         lines = [line.strip() for line in f if line.strip()]
 
-    obj_line = next(line for line in lines if line.lower().startswith('maximizar'))
+    obj_line = next(line for line in lines if line.lower().startswith(('maximizar', 'minimizar')))
+    tipo_objetivo = 'max' if 'maximizar' in obj_line.lower() else 'min'
     c = parse_expression(obj_line.split('=')[1])
 
     restr_start = lines.index('Restricoes:') + 1
@@ -97,7 +98,7 @@ def parse_modelo_txt(file_path):
     A_original = np.array(A_base, dtype=float)
     restricoes_tipo = sinais
 
-    return A, A_original, restricoes_tipo, b, c, c_ext, artificial_vars, sinais_variaveis
+    return A, A_original, restricoes_tipo, b, c, c_ext, artificial_vars, sinais_variaveis, tipo_objetivo
 
 # === Tornando as variáveis globais, como LPsolve espera ===
-A, A_original, restricoes_tipo, b, c, c_ext, artificiais, sinais_variaveis = parse_modelo_txt("modelo.txt")
+A, A_original, restricoes_tipo, b, c, c_ext, artificiais, sinais_variaveis, tipo_objetivo = parse_modelo_txt("modelo.txt")
