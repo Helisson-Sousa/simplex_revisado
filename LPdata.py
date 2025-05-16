@@ -47,6 +47,18 @@ def parse_modelo_txt(file_path):
         A_base.append(parse_expression(lhs))
         b.append(float(rhs.strip()))
 
+    cond_lines = lines[restr_end + 1:]
+    sinais_variaveis = []
+    for cond in cond_lines:
+        if '>=' in cond:
+            sinais_variaveis.append('>=')
+        elif '<=' in cond:
+            sinais_variaveis.append('<=')
+        elif 'livre' in cond.lower():
+            sinais_variaveis.append('=')
+        else:
+            raise ValueError(f"Condição de variável mal formatada: {cond}")
+
     max_len = max(len(row) for row in A_base)
     A_base = [row + [0]*(max_len - len(row)) for row in A_base]
     c = c + [0]*(max_len - len(c))
@@ -82,8 +94,10 @@ def parse_modelo_txt(file_path):
     b = np.array(b, dtype=float)
     c_ext = np.array(c_ext, dtype=float)
     c = np.array(c, dtype=float)
+    A_original = np.array(A_base, dtype=float)
+    restricoes_tipo = sinais
 
-    return A, b, c, c_ext, artificial_vars
+    return A, A_original, restricoes_tipo, b, c, c_ext, artificial_vars, sinais_variaveis
 
 # === Tornando as variáveis globais, como LPsolve espera ===
-A, b, c, c_ext, artificiais = parse_modelo_txt("modelo.txt")
+A, A_original, restricoes_tipo, b, c, c_ext, artificiais, sinais_variaveis = parse_modelo_txt("modelo.txt")
