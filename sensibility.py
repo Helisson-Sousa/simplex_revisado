@@ -5,7 +5,6 @@ def analise_sensibilidade(c, A, b, base, nao_base, B_inv, pi):
     m = len(b)
     nomes_vars = [f"X{i+1}" for i in range(n_var)]
 
-    print("\n\n🔎 ANÁLISE DE SENSIBILIDADE")
     print("\nRANGES IN WHICH THE BASIS IS UNCHANGED:\n")
 
     # --- COEFICIENTES DA FUNÇÃO OBJETIVO ---
@@ -15,7 +14,7 @@ def analise_sensibilidade(c, A, b, base, nao_base, B_inv, pi):
 
     for i in range(n_var):
         nome = nomes_vars[i]
-        coef_original = -c[i]
+        coef_original = c[i]
 
         if i in base:
             print(f"{nome:<8} {coef_original:>10.6f} {'N/A':>15} {'N/A':>15}")
@@ -23,11 +22,11 @@ def analise_sensibilidade(c, A, b, base, nao_base, B_inv, pi):
             j = nao_base.index(i)
             red_cost = -(c[i] - pi @ A[:, i])
             if red_cost > 0:
-                dec = red_cost
-                inc = float('inf')
+                inc = red_cost       # aumento permitido
+                dec = float('inf')   # diminuição ilimitada
             elif red_cost < 0:
-                inc = -red_cost
-                dec = float('inf')
+                dec = -red_cost      # diminuição permitida
+                inc = float('inf')   # aumento ilimitado
             else:
                 inc = dec = float('inf')
             print(f"{nome:<8} {coef_original:>10.6f} {inc:>15.6f} {dec:>15.6f}")
@@ -48,9 +47,9 @@ def analise_sensibilidade(c, A, b, base, nao_base, B_inv, pi):
 
         for j in range(m):
             if direction[j] < 0:
-                inc_candidates.append(-x_B[j] / direction[j])
+                inc_candidates.append(-x_B[j] / direction[j])  # limite do aumento
             elif direction[j] > 0:
-                dec_candidates.append(x_B[j] / direction[j])
+                dec_candidates.append(x_B[j] / direction[j])   # limite da diminuição
 
         inc = min(inc_candidates) if inc_candidates else float('inf')
         dec = min(dec_candidates) if dec_candidates else float('inf')
