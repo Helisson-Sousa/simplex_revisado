@@ -1,6 +1,6 @@
 # 🧮 Simplex Revisado em Python
 
-Este projeto tem como objetivo a implementação do **método Simplex Revisado** utilizando Python, com recursos adicionais para análise econômica e sensibilidade das soluções de Programação Linear. Faz parte da primeira unidade da disciplina Otimização Linear, ministrada pelo professor Anand Subramanian
+Este projeto tem como objetivo a implementação do **método Simplex Revisado** utilizando Python, com recursos adicionais para análise econômica e sensibilidade das soluções de Programação Linear. A atividade faz parte da primeira unidade da disciplina Otimização Linear, ministrada pelo professor Anand Subramanian.
 
 ## 📚 Funcionalidades
 
